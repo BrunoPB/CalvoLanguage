@@ -1,0 +1,53 @@
+# PARSER CONFIGURATION FILE
+# TREAT '&' AS LAMBDA 'λ'
+# THE GRAMMAR SHOULD BE FACTORIZED
+# THE GRAMMAR SHOULD BE EXTENDED
+# NON TERMINAIS MUST START WITH UPPER CASE
+
+S           #  CODE
+
+CODE        #  &
+
+CODE        #  DECLARATION CODE
+
+CODE        #  ATRIB CODE
+
+CODE        #  COND CODE
+
+CODE        #  REP CODE
+
+CODE        #  CALL CODE
+
+DECLARATION #  var ATRIB
+
+ATRIB       #  id = EXPRESSION ;
+
+EXPRESSION  #  number OPERATION
+
+EXPRESSION  #  id OPERATION
+
+EXPRESSION  #  ( EXPRESSION )
+
+OPERATION   #  operator EXPRESSION
+
+OPERATION   #  &
+
+BOOL        #  EXPRESSION compare EXPRESSION BOOLOP
+
+BOOLOP      #  boolean BOOL
+
+BOOLOP      #  &
+
+COND        #  if ( BOOL ) { CODE } ELSE
+
+ELSE        #  else { CODE }
+
+ELSE        #  &
+
+REP         #  while ( BOOL ) { CODE }
+
+CALL        #  id ( PARAM ) ;
+
+PARAM       #  EXPRESSION
+
+PARAM       #  &

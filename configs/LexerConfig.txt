@@ -1,0 +1,40 @@
+# LEXER CONFIGURATION FILE
+
+# COMMENTS
+
+/\*   ##  commentstart
+\*/   ##  commentend
+
+# KEYWORDS
+
+var ##   var
+if  ##   if
+else    ##    else
+while   ##   while
+
+# SPECIAL CHARS
+
+[;]   ##   ;
+[{]   ##   {
+[}]   ##   }
+[(]   ##   (
+[)]   ##   )
+[=]   ##   =
+
+# OPERATORS
+
+([+]|[-]|[*]|[/]|[%])   ##   operator
+(<|<=|==|>=|>|!=)  ##   compare
+([&]|[|])  ##   boolean
+
+# VALUES
+
+([0-9]+ | -[1-9]+)  ##   number
+
+# IDS
+
+([a-zA-Z]+[a-zA-Z0-9]*)    ##   id
+
+# ERROR
+
+.   ##   error
