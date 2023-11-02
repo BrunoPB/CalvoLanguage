@@ -5,8 +5,7 @@
 #include <tuple>
 
 #include "./../shared/allincludes.h"
-
-using namespace std;
+#include "../shared/namespaces.h"
 
 vector<string> readFile(string);
 

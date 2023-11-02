@@ -5,8 +5,7 @@
 #include <vector>
 
 #include "./../shared/allincludes.h"
-
-using namespace std;
+#include "./../shared/namespaces.h"
 
 /*
  * Get the tokens from a file

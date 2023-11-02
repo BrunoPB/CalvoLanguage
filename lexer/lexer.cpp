@@ -1,10 +1,10 @@
+#include "lexer.h"
+
 #include <iostream>
 #include <regex>
 #include <vector>
 
 #include "../reader/reader.h"
-
-using namespace std;
 
 vector<token> getTokens(string fileName) {
     try {

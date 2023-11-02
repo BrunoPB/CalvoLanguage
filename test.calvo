@@ -1,4 +1,4 @@
-/* First code ever created  and compiled in Calvo Language
+/* First code ever created and compiled in Calvo Language
     Author: Bruno Pena Baêta
 */
 
@@ -9,6 +9,10 @@ var r = 0;
 if (op == 0) {
     r = i + (j - 1);
 } else {
-    r = i - (j*-1);
+    while (i >= 8) {
+        i = i + 1;
+        j = j - 1;
+    }
+    get(i);
 }
 show(r);

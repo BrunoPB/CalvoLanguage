@@ -3,8 +3,6 @@
 #include <fstream>
 #include <vector>
 
-using namespace std;
-
 vector<string> readFile(string fileName) {
     vector<string> code = {};
     ifstream file("./" + fileName);
@@ -104,7 +102,7 @@ inline int getTokenEnum(string s) {
     } else if (s == "operator") {
         return tok_operator;
     } else if (s == "compare") {
-        return tok_operator;
+        return tok_compare;
     } else if (s == "boolean") {
         return tok_boolean;
     } else if (s == "number") {
