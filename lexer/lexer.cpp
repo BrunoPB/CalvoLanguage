@@ -7,20 +7,20 @@
 #include "../reader/reader.h"
 
 vector<token> getTokens(string fileName) {
-    try {
-        vector<string> fileLines = readFile(fileName);
-        vector<lexer_rule> rules = getLexerConfig();
-        vector<token> tokens = {};
-        for (auto line : fileLines) {
-            vector<token> line_tokens = tokenize(line, rules);
-            tokens.insert(tokens.begin() + tokens.size(),
-                          line_tokens.begin(),
-                          line_tokens.begin() + line_tokens.size());
-        }
-        return tokens;
-    } catch (string error) {
-        throw error;
+    // try {
+    vector<string> fileLines = readFile(fileName);
+    vector<lexer_rule> rules = getLexerConfig();
+    vector<token> tokens = {};
+    for (auto line : fileLines) {
+        vector<token> line_tokens = tokenize(line, rules);
+        tokens.insert(tokens.begin() + tokens.size(),
+                      line_tokens.begin(),
+                      line_tokens.begin() + line_tokens.size());
     }
+    return tokens;
+    //} catch (string error) {
+    // throw error;
+    //}
 }
 
 vector<token> tokenize(string code, vector<lexer_rule> rules) {
@@ -35,7 +35,7 @@ vector<token> tokenize(string code, vector<lexer_rule> rules) {
         }
 
         if (!inComment && !matchAnyRule(lexeme, rules)) {
-            throw "UNKNOWN LEXEME: " + lexeme;
+            // throw "UNKNOWN LEXEME: " + lexeme;
         }
 
         // Getting largest sequence possible using lookahead
@@ -62,7 +62,7 @@ vector<token> tokenize(string code, vector<lexer_rule> rules) {
             if (inComment) {
                 inComment = false;
             } else {
-                throw "ERROR IN LEXER: COMMENT ENDING WITHOUT STARTING.";
+                // throw "ERROR IN LEXER: COMMENT ENDING WITHOUT STARTING.";
             }
         } else if (!inComment) {
             token t = make_tuple(cur_token, lexeme);
@@ -96,5 +96,6 @@ int matchToken(string lexeme, vector<lexer_rule> rules) {
             return get<1>(rule);
         }
     }
-    throw "UNKNOWN TOKEN: " + lexeme;
+    return -1;
+    // throw "UNKNOWN TOKEN: " + lexeme;
 }

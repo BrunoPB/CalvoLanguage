@@ -1,7 +1,7 @@
 /* First code ever created and compiled in Calvo Language
     Author: Bruno Pena Baêta
 */
-
+/*
 var i = 5;
 var j = -3;
 var op = 1;
@@ -15,4 +15,5 @@ if (op == 0) {
     }
     get(i);
 }
-show(r);
+show(r);*/
+var i = 43;

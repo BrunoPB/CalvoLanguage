@@ -13,7 +13,7 @@ vector<string> readFile(string fileName) {
         }
         file.close();
     } else {
-        throw "File not found.";
+        // throw "File not found.";
     }
     return code;
 }
@@ -45,7 +45,7 @@ vector<lexer_rule> getLexerConfig() {
                             i = lineLength;
                         }
                     } else {
-                        throw "ERROR: Error in lexer configuration file";
+                        // throw "ERROR: Error in lexer configuration file";
                     }
                 }
             }
@@ -56,7 +56,8 @@ vector<lexer_rule> getLexerConfig() {
         file.close();
         return rules;
     } else {
-        throw "File not found.";
+        return {};
+        // throw "File not found.";
     }
 }
 

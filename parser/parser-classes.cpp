@@ -260,3 +260,7 @@ parser_rule LambdaParam::getParserRule() {
     vector<int> right = {};
     return make_tuple(left, right);
 }
+
+// Value* S::codegen() {
+
+// }

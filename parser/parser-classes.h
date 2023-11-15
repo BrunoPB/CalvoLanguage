@@ -6,41 +6,36 @@
 
 #include "../shared/allincludes.h"
 #include "../shared/namespaces.h"
+// #include "llvm/IR/IRBuilder.h"
+// #include "llvm/IR/LLVMContext.h"
+// #include "llvm/IR/Module.h"
+// #include "llvm/IR/Value.h"
+
+// using namespace llvm;
+
+// static std::unique_ptr<LLVMContext> TheContext; // LLVM global context, where the IR will be stored
+// static std::unique_ptr<IRBuilder<>> Builder; // Builder used to build the LLVM context
+// static std::unique_ptr<Module> TheModule; // Type of object that can be built into the LLVM context
+// static std::map<std::string, Value *> NamedValues;
 
 class ParserRule {
    public:
     virtual parser_rule getParserRule() { return parser_rule(); };
+    // virtual Value *codegen() = 0;
 };
 
-class Code : public ParserRule {
-   public:
-    parser_rule getParserRule() { return parser_rule(); };
-};
-
-class Expression : public ParserRule {
-   public:
-    parser_rule getParserRule() { return parser_rule(); };
-};
-
-class Operation : public ParserRule {
-   public:
-    parser_rule getParserRule() { return parser_rule(); };
-};
-
-class BoolOp : public ParserRule {
-   public:
-    parser_rule getParserRule() { return parser_rule(); };
-};
-
-class Else : public ParserRule {
-   public:
-    parser_rule getParserRule() { return parser_rule(); };
-};
-
-class Param : public ParserRule {
-   public:
-    parser_rule getParserRule() { return parser_rule(); };
-};
+class Code;
+class Declaration;
+class Atrib;
+class Expression;
+class Operation;
+class Bool;
+class BoolOp;
+class Cond;
+class Else;
+class Rep;
+class Call;
+class Param;
 
 class S : public ParserRule {
    public:
@@ -50,12 +45,102 @@ class S : public ParserRule {
     S(shared_ptr<Code> code) : code(move(code)) {}
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class Code : public ParserRule {
+   public:
+    shared_ptr<Declaration> decl;
+    shared_ptr<Atrib> atrib;
+    shared_ptr<Code> code;
+    shared_ptr<Call> call;
+    shared_ptr<Rep> rep;
+    shared_ptr<Cond> cond;
+    parser_rule getParserRule() { return parser_rule(); };
+    // Value *codegen() override;
 };
 
 class LambdaCode : public Code {
    public:
     LambdaCode() {}
     parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class DecCode : public Code {
+   public:
+    DecCode() {}
+    DecCode(shared_ptr<Declaration> _decl,
+            shared_ptr<Code> _code) {
+        decl = move(_decl);
+        code = move(_code);
+    }
+
+    parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class AtribCode : public Code {
+   public:
+    AtribCode() {}
+    AtribCode(shared_ptr<Atrib> _atrib,
+              shared_ptr<Code> _code) {
+        atrib = move(_atrib);
+        code = move(_code);
+    }
+
+    parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class CondCode : public Code {
+   public:
+    CondCode() {}
+    CondCode(shared_ptr<Cond> _cond,
+             shared_ptr<Code> _code) {
+        cond = move(_cond);
+        code = move(_code);
+    }
+
+    parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class RepCode : public Code {
+   public:
+    RepCode() {}
+    RepCode(shared_ptr<Rep> _rep,
+            shared_ptr<Code> _code) {
+        rep = move(_rep);
+        code = move(_code);
+    }
+
+    parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class CallCode : public Code {
+   public:
+    CallCode() {}
+    CallCode(shared_ptr<Call> _call,
+             shared_ptr<Code> _code) {
+        call = move(_call);
+        code = move(_code);
+    }
+
+    parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class Declaration : public ParserRule {
+   public:
+    shared_ptr<Atrib> atrib;
+
+    Declaration() {}
+    Declaration(shared_ptr<Atrib> atrib) : atrib(move(atrib)) {}
+
+    parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class Atrib : public ParserRule {
@@ -67,65 +152,79 @@ class Atrib : public ParserRule {
     Atrib(string id, shared_ptr<Expression> expr) : id(id), expr(move(expr)) {}
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
-class Declaration : public ParserRule {
+class Expression : public ParserRule {
    public:
-    shared_ptr<Atrib> atrib;
-
-    Declaration() {}
-    Declaration(shared_ptr<Atrib> atrib) : atrib(move(atrib)) {}
-
-    parser_rule getParserRule() override;
+    int number;
+    shared_ptr<Operation> op;
+    string id;
+    shared_ptr<Expression> expr;
+    parser_rule getParserRule() { return parser_rule(); };
+    // Value *codegen() override;
 };
 
 class NumberExpression : public Expression {
    public:
-    int number;
-    shared_ptr<Operation> op;
-
     NumberExpression() {}
-    NumberExpression(int number, shared_ptr<Operation> op) : number(number), op(move(op)) {}
+    NumberExpression(int _number, shared_ptr<Operation> _op) {
+        number = _number;
+        op = move(_op);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class IdExpression : public Expression {
    public:
-    string id;
-    shared_ptr<Operation> op;
-
     IdExpression() {}
-    IdExpression(string id, shared_ptr<Operation> op) : id(id), op(move(op)) {}
+    IdExpression(string _id, shared_ptr<Operation> _op) {
+        id = _id;
+        op = move(_op);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class ParenExpression : public Expression {
    public:
-    shared_ptr<Expression> expr;
-
     ParenExpression() {}
-    ParenExpression(shared_ptr<Expression> expr) : expr(move(expr)) {}
+    ParenExpression(shared_ptr<Expression> _expr) {
+        expr = move(_expr);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class Operation : public ParserRule {
+   public:
+    string op;
+    shared_ptr<Expression> expr;
+    parser_rule getParserRule() { return parser_rule(); };
+    // Value *codegen() override;
 };
 
 class OpOperation : public Operation {
    public:
-    string op;
-    shared_ptr<Expression> expr;
-
     OpOperation() {}
-    OpOperation(string op, shared_ptr<Expression> expr) : op(op), expr(move(expr)) {}
+    OpOperation(string _op, shared_ptr<Expression> _expr) {
+        op = move(_op);
+        expr = move(_expr);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class LambdaOperation : public Operation {
    public:
     LambdaOperation() {}
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class Bool : public ParserRule {
@@ -142,23 +241,34 @@ class Bool : public ParserRule {
          shared_ptr<BoolOp> boolop) : expr1(move(expr1)), compare(compare), expr2(move(expr2)), boolop(move(boolop)) {}
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class BoolOp : public ParserRule {
+   public:
+    string boolean;
+    shared_ptr<Bool> boolptr;
+    parser_rule getParserRule() { return parser_rule(); };
+    // Value *codegen() override;
 };
 
 class BoBoolOp : public BoolOp {
    public:
-    string boolean;
-    shared_ptr<Bool> boolptr;
-
     BoBoolOp() {}
-    BoBoolOp(string boolean, shared_ptr<Bool> boolptr) : boolean(boolean), boolptr(move(boolptr)) {}
+    BoBoolOp(string _boolean, shared_ptr<Bool> _boolptr) {
+        boolean = _boolean;
+        boolptr = move(_boolptr);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class LambdaBoolOp : public BoolOp {
    public:
     LambdaBoolOp() {}
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class Cond : public ParserRule {
@@ -173,22 +283,32 @@ class Cond : public ParserRule {
          shared_ptr<Else> elseptr) : boolptr(move(boolptr)), code(move(code)), elseptr(move(elseptr)) {}
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class Else : public ParserRule {
+   public:
+    shared_ptr<Code> code;
+    parser_rule getParserRule() { return parser_rule(); };
+    // Value *codegen() override;
 };
 
 class ElElse : public Else {
    public:
-    shared_ptr<Code> code;
-
     ElElse() {}
-    ElElse(shared_ptr<Code> code) : code(move(code)) {}
+    ElElse(shared_ptr<Code> _code) {
+        code = move(_code);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class LambdaElse : public Else {
    public:
     LambdaElse() {}
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class Rep : public ParserRule {
@@ -201,6 +321,7 @@ class Rep : public ParserRule {
         shared_ptr<Code> code) : boolptr(move(boolptr)), code(move(code)) {}
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class Call : public ParserRule {
@@ -212,82 +333,32 @@ class Call : public ParserRule {
     Call(string id, shared_ptr<Param> param) : id(id), param(move(param)) {}
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
+};
+
+class Param : public ParserRule {
+   public:
+    shared_ptr<Expression> expr;
+    parser_rule getParserRule() { return parser_rule(); };
+    // Value *codegen() override;
 };
 
 class ExprParam : public Param {
    public:
-    shared_ptr<Expression> expr;
-
     ExprParam() {}
-    ExprParam(shared_ptr<Expression> expr) : expr(move(expr)) {}
+    ExprParam(shared_ptr<Expression> _expr) {
+        expr = move(_expr);
+    }
 
     parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 class LambdaParam : public Param {
    public:
     LambdaParam() {}
     parser_rule getParserRule() override;
-};
-
-class DecCode : public Code {
-   public:
-    shared_ptr<Declaration> decl;
-    shared_ptr<Code> code;
-
-    DecCode() {}
-    DecCode(shared_ptr<Declaration> decl,
-            shared_ptr<Code> code) : decl(move(decl)), code(move(code)) {}
-
-    parser_rule getParserRule() override;
-};
-
-class AtribCode : public Code {
-   public:
-    shared_ptr<Atrib> atrib;
-    shared_ptr<Code> code;
-
-    AtribCode() {}
-    AtribCode(shared_ptr<Atrib> atrib,
-              shared_ptr<Code> code) : atrib(move(atrib)), code(move(code)) {}
-
-    parser_rule getParserRule() override;
-};
-
-class CondCode : public Code {
-   public:
-    shared_ptr<Cond> cond;
-    shared_ptr<Code> code;
-
-    CondCode() {}
-    CondCode(shared_ptr<Cond> cond,
-             shared_ptr<Code> code) : cond(move(cond)), code(move(code)) {}
-
-    parser_rule getParserRule() override;
-};
-
-class RepCode : public Code {
-   public:
-    shared_ptr<Rep> rep;
-    shared_ptr<Code> code;
-
-    RepCode() {}
-    RepCode(shared_ptr<Rep> rep,
-            shared_ptr<Code> code) : rep(move(rep)), code(move(code)) {}
-
-    parser_rule getParserRule() override;
-};
-
-class CallCode : public Code {
-   public:
-    shared_ptr<Call> call;
-    shared_ptr<Code> code;
-
-    CallCode() {}
-    CallCode(shared_ptr<Call> call,
-             shared_ptr<Code> code) : call(move(call)), code(move(code)) {}
-
-    parser_rule getParserRule() override;
+    // Value *codegen() override;
 };
 
 shared_ptr<S> parseStart(shared_ptr<Code>);
