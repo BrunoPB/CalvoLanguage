@@ -361,26 +361,6 @@ class LambdaParam : public Param {
     // Value *codegen() override;
 };
 
-shared_ptr<S> parseStart(shared_ptr<Code>);
-shared_ptr<DecCode> parseDeclarationCode(shared_ptr<Declaration>, shared_ptr<Code>);
-shared_ptr<AtribCode> parseAtribuitionCode(shared_ptr<Atrib>, shared_ptr<Code>);
-shared_ptr<CondCode> parseConditionalCode(shared_ptr<Cond>, shared_ptr<Code>);
-shared_ptr<RepCode> parseRepetitionCode(shared_ptr<Rep>, shared_ptr<Code>);
-shared_ptr<CallCode> parseCallCode(shared_ptr<Call>, shared_ptr<Code>);
-shared_ptr<Declaration> parseDeclaration(shared_ptr<Atrib>);
-shared_ptr<Atrib> parseAtribuition(string, shared_ptr<Expression>);
-shared_ptr<NumberExpression> parseNumberExpression(int, shared_ptr<Operation>);
-shared_ptr<IdExpression> parseIdExpression(string, shared_ptr<Operation>);
-shared_ptr<ParenExpression> parseParenExpression(shared_ptr<Expression>);
-shared_ptr<OpOperation> parseOpOperation(string, shared_ptr<Expression>);
-shared_ptr<Bool> parseBool(shared_ptr<Expression>, string, shared_ptr<Expression>, shared_ptr<BoolOp>);
-shared_ptr<BoBoolOp> parseBoBoolOperation(string, shared_ptr<Bool>);
-shared_ptr<Cond> parseConditional(shared_ptr<Bool>, shared_ptr<Code>, shared_ptr<Else>);
-shared_ptr<ElElse> parseElElse(shared_ptr<Code>);
-shared_ptr<Rep> parseRepetition(shared_ptr<Bool>, shared_ptr<Code>);
-shared_ptr<Call> parseCall(string, shared_ptr<Param>);
-shared_ptr<ExprParam> parseExpressionParameter(shared_ptr<Expression>);
-
 class ParserClasses {
    public:
     stack<shared_ptr<ParserRule>> pr;
