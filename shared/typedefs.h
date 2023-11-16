@@ -6,7 +6,7 @@
 #include <tuple>
 #include <vector>
 
-using namespace std;
+#include "namespaces.h"
 
 typedef tuple<string, int> lexer_rule;
 typedef tuple<int, string> token;

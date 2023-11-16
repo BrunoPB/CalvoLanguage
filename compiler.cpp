@@ -1,25 +1,34 @@
 #include <iostream>
 #include <vector>
 
+#include "ir/ir.h"
 #include "lexer/lexer.h"
 #include "parser/parser.h"
 #include "shared/allincludes.h"
-#include "shared/namespaces.h"
 
 int main(int argc, char *argv[]) {
     // try {
+    if (argc < 2) {
+        cerr << "No file to compile." << endl;
+        return -1;
+    }
+
+    // Lexer
     string fileName = argv[1];
     vector<token> tokens;
     tokens = getTokens(fileName);
+
+    // Parser
     lr0_automaton automaton = getAutomaton();
     parsing_table parsingTable = getParsingTable(automaton);
     shared_ptr<S> AST = getAST(parsingTable, tokens);
-    parser_rule test = AST->code->decl->getParserRule();
-    cout << get<0>(test) << " -> ";
-    for (auto p : get<1>(test)) {
-        cout << p << " ";
-    }
-    cout << endl;
+
+    // IR Generation
+    compileToIR(move(AST));
+
+    // Save module
+    saveModuleToFile("compiler.ll");
+
     // } catch (string error) {
     //     cout << "ERROR: " << error << endl;
     // }

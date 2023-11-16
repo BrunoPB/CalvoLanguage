@@ -5,23 +5,11 @@
 #include <stack>
 
 #include "../shared/allincludes.h"
-#include "../shared/namespaces.h"
-// #include "llvm/IR/IRBuilder.h"
-// #include "llvm/IR/LLVMContext.h"
-// #include "llvm/IR/Module.h"
-// #include "llvm/IR/Value.h"
-
-// using namespace llvm;
-
-// static std::unique_ptr<LLVMContext> TheContext; // LLVM global context, where the IR will be stored
-// static std::unique_ptr<IRBuilder<>> Builder; // Builder used to build the LLVM context
-// static std::unique_ptr<Module> TheModule; // Type of object that can be built into the LLVM context
-// static std::map<std::string, Value *> NamedValues;
 
 class ParserRule {
    public:
     virtual parser_rule getParserRule() { return parser_rule(); };
-    // virtual Value *codegen() = 0;
+    virtual Value *codegen() { return nullptr; }
 };
 
 class Code;
@@ -45,7 +33,7 @@ class S : public ParserRule {
     S(shared_ptr<Code> code) : code(move(code)) {}
 
     parser_rule getParserRule() override;
-    // Value *codegen() override;
+    Value *codegen() override;
 };
 
 class Code : public ParserRule {
@@ -57,14 +45,13 @@ class Code : public ParserRule {
     shared_ptr<Rep> rep;
     shared_ptr<Cond> cond;
     parser_rule getParserRule() { return parser_rule(); };
-    // Value *codegen() override;
+    virtual Value *codegen() { return nullptr; };
 };
 
 class LambdaCode : public Code {
    public:
     LambdaCode() {}
     parser_rule getParserRule() override;
-    // Value *codegen() override;
 };
 
 class DecCode : public Code {
@@ -129,7 +116,7 @@ class CallCode : public Code {
     }
 
     parser_rule getParserRule() override;
-    // Value *codegen() override;
+    Value *codegen() override;
 };
 
 class Declaration : public ParserRule {
@@ -162,7 +149,7 @@ class Expression : public ParserRule {
     string id;
     shared_ptr<Expression> expr;
     parser_rule getParserRule() { return parser_rule(); };
-    // Value *codegen() override;
+    virtual Value *codegen() { return nullptr; };
 };
 
 class NumberExpression : public Expression {
@@ -174,7 +161,7 @@ class NumberExpression : public Expression {
     }
 
     parser_rule getParserRule() override;
-    // Value *codegen() override;
+    Value *codegen() override;
 };
 
 class IdExpression : public Expression {
@@ -205,7 +192,7 @@ class Operation : public ParserRule {
     string op;
     shared_ptr<Expression> expr;
     parser_rule getParserRule() { return parser_rule(); };
-    // Value *codegen() override;
+    Value *codegen() { return nullptr; };
 };
 
 class OpOperation : public Operation {
@@ -224,7 +211,6 @@ class LambdaOperation : public Operation {
    public:
     LambdaOperation() {}
     parser_rule getParserRule() override;
-    // Value *codegen() override;
 };
 
 class Bool : public ParserRule {
@@ -333,14 +319,14 @@ class Call : public ParserRule {
     Call(string id, shared_ptr<Param> param) : id(id), param(move(param)) {}
 
     parser_rule getParserRule() override;
-    // Value *codegen() override;
+    Value *codegen() override;
 };
 
 class Param : public ParserRule {
    public:
     shared_ptr<Expression> expr;
     parser_rule getParserRule() { return parser_rule(); };
-    // Value *codegen() override;
+    Value *codegen() { return nullptr; };
 };
 
 class ExprParam : public Param {
@@ -351,14 +337,13 @@ class ExprParam : public Param {
     }
 
     parser_rule getParserRule() override;
-    // Value *codegen() override;
+    Value *codegen() override;
 };
 
 class LambdaParam : public Param {
    public:
     LambdaParam() {}
     parser_rule getParserRule() override;
-    // Value *codegen() override;
 };
 
 class ParserClasses {
@@ -397,6 +382,12 @@ class ParserClasses {
         p = {};
     };
 };
+
+Value *LogErrorV(const char *);
+
+int getRuleNumber(parser_rule);
+
+parser_rule getRuleFromNumber(int);
 
 #include "parser-classes.cpp"
 

@@ -6,12 +6,11 @@
 #include <vector>
 
 #include "../shared/allincludes.h"
-#include "../shared/namespaces.h"
 #include "parser-classes.h"
 
 shared_ptr<S> getAST(parsing_table, vector<token>);
 
-void generateASTFromRule(ParserClasses*, stack<token>*, int);
+void generateASTFromRule(ParserClasses *, stack<token> *, int);
 
 parsing_table getParsingTable(lr0_automaton);
 
@@ -28,10 +27,6 @@ bool doesAutomatonHasState(lr0_automaton, aut_state);
 bool areStatesEqual(aut_state, aut_state);
 
 bool areItemsEqual(item, item);
-
-int getRuleNumber(parser_rule);
-
-parser_rule getRuleFromNumber(int);
 
 set<int> FOLLOW(int, set<int> = {});
 

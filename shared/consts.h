@@ -2,7 +2,7 @@
 #define CONSTS_H
 #include <iostream>
 
-using namespace std;
+#include "namespaces.h"
 
 const string CONFIGS_FOLDER_PATH = "./configs/";
 extern const string LEXER_CONFIG_FILE = CONFIGS_FOLDER_PATH + "LexerConfig.txt";

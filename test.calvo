@@ -1,19 +1,5 @@
-/* First code ever created and compiled in Calvo Language
+/* First code ever created and compiled in Calvo Language, my first compiler project
     Author: Bruno Pena Baêta
 */
-/*
-var i = 5;
-var j = -3;
-var op = 1;
-var r = 0;
-if (op == 0) {
-    r = i + (j - 1);
-} else {
-    while (i >= 8) {
-        i = i + 1;
-        j = j - 1;
-    }
-    get(i);
-}
-show(r);*/
-var i = 43;
+
+show(2);
