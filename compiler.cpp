@@ -27,7 +27,11 @@ int main(int argc, char *argv[]) {
     compileToIR(move(AST));
 
     // Save module
-    saveModuleToFile("compiler.ll");
+    string outputFileName = "calvo.ll";
+    if (argc == 3) {
+        outputFileName = argv[2];
+    }
+    saveModuleToFile(outputFileName);
 
     // } catch (string error) {
     //     cout << "ERROR: " << error << endl;

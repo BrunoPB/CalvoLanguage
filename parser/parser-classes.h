@@ -389,6 +389,8 @@ int getRuleNumber(parser_rule);
 
 parser_rule getRuleFromNumber(int);
 
+#include "../ir/codegen.cpp"
 #include "parser-classes.cpp"
+#include "parser-rules.cpp"
 
 #endif
