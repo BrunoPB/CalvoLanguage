@@ -20,6 +20,7 @@ Function* declareMainFunction() {
     string fnName = "main";
     FunctionType* fnType = move(FunctionType::get(Builder->getInt32Ty(), false));
     Function* fn = Function::Create(fnType, Function::ExternalLinkage, fnName, *TheModule);
+    GlobalEnv->define(fnName, fn);
     return fn;
 }
 

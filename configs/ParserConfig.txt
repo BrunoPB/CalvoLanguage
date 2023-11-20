@@ -8,8 +8,6 @@ S           #  CODE
 
 CODE        #  &
 
-CODE        #  DECLARATION CODE
-
 CODE        #  ATRIB CODE
 
 CODE        #  COND CODE
@@ -18,15 +16,13 @@ CODE        #  REP CODE
 
 CODE        #  CALL CODE
 
-DECLARATION #  var ATRIB
-
 ATRIB       #  id = EXPRESSION ;
 
 EXPRESSION  #  number OPERATION
 
 EXPRESSION  #  id OPERATION
 
-EXPRESSION  #  ( EXPRESSION )
+EXPRESSION  #  ( EXPRESSION ) OPERATION
 
 OPERATION   #  operator EXPRESSION
 

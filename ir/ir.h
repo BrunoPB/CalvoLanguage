@@ -3,6 +3,7 @@
 
 #include "../parser/parser-classes.h"
 #include "../shared/allincludes.h"
+#include "env.h"
 
 void compileToIR(shared_ptr<S>);
 

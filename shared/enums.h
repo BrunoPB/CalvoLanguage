@@ -13,43 +13,41 @@ enum Token {
     // Keywords
     tok_if = -4,
     tok_else = -5,
-    tok_var = -6,
-    tok_while = -7,
+    tok_while = -6,
 
     // Special Chars
-    tok_bracket_o = -8,
-    tok_bracket_c = -9,
-    tok_paren_o = -10,
-    tok_paren_c = -11,
-    tok_semicolon = -12,
-    tok_equal = -13,
+    tok_bracket_o = -7,
+    tok_bracket_c = -8,
+    tok_paren_o = -9,
+    tok_paren_c = -10,
+    tok_semicolon = -11,
+    tok_equal = -12,
 
     // Operators
-    tok_compare = -14,
-    tok_boolean = -15,
-    tok_operator = -16,
+    tok_compare = -13,
+    tok_boolean = -14,
+    tok_operator = -15,
 
     // Values
-    tok_number = -17,
+    tok_number = -16,
 
     // Ids
-    tok_id = -18,
+    tok_id = -17,
 };
 
 enum NonTerminals {
     nt_S = 0,
     nt_CODE = 1,
-    nt_DECLARATION = 2,
-    nt_ATRIB = 3,
-    nt_EXPRESSION = 4,
-    nt_OPERATION = 5,
-    nt_BOOL = 6,
-    nt_BOOLOP = 7,
-    nt_COND = 8,
-    nt_ELSE = 9,
-    nt_REP = 10,
-    nt_CALL = 11,
-    nt_PARAM = 12
+    nt_ATRIB = 2,
+    nt_EXPRESSION = 3,
+    nt_OPERATION = 4,
+    nt_BOOL = 5,
+    nt_BOOLOP = 6,
+    nt_COND = 7,
+    nt_ELSE = 8,
+    nt_REP = 9,
+    nt_CALL = 10,
+    nt_PARAM = 11
 };
 
 #endif

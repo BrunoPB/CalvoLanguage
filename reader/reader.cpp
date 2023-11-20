@@ -80,8 +80,6 @@ inline int getTokenEnum(string s) {
         return tok_comment_s;
     } else if (s == "commentend") {
         return tok_comment_e;
-    } else if (s == "var") {
-        return tok_var;
     } else if (s == "if") {
         return tok_if;
     } else if (s == "else") {

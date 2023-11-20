@@ -14,93 +14,85 @@ int getRuleNumber(parser_rule rule) {
     if (rule == lc.getParserRule()) {
         return 1;
     }
-    DecCode dc = DecCode();
-    if (rule == dc.getParserRule()) {
-        return 2;
-    }
     AtribCode ac = AtribCode();
     if (rule == ac.getParserRule()) {
-        return 3;
+        return 2;
     }
     CondCode cc = CondCode();
     if (rule == cc.getParserRule()) {
-        return 4;
+        return 3;
     }
     RepCode rc = RepCode();
     if (rule == rc.getParserRule()) {
-        return 5;
+        return 4;
     }
     CallCode clc = CallCode();
     if (rule == clc.getParserRule()) {
-        return 6;
-    }
-    Declaration d = Declaration();
-    if (rule == d.getParserRule()) {
-        return 7;
+        return 5;
     }
     Atrib a = Atrib();
     if (rule == a.getParserRule()) {
-        return 8;
+        return 6;
     }
     NumberExpression ne = NumberExpression();
     if (rule == ne.getParserRule()) {
-        return 9;
+        return 7;
     }
     IdExpression ie = IdExpression();
     if (rule == ie.getParserRule()) {
-        return 10;
+        return 8;
     }
     ParenExpression pe = ParenExpression();
     if (rule == pe.getParserRule()) {
-        return 11;
+        return 9;
     }
     OpOperation oo = OpOperation();
     if (rule == oo.getParserRule()) {
-        return 12;
+        return 10;
     }
     LambdaOperation lo = LambdaOperation();
     if (rule == lo.getParserRule()) {
-        return 13;
+        return 11;
     }
     Bool b = Bool();
     if (rule == b.getParserRule()) {
-        return 14;
+        return 12;
     }
     BoBoolOp bbo = BoBoolOp();
     if (rule == bbo.getParserRule()) {
-        return 15;
+        return 13;
     }
     LambdaBoolOp lbo = LambdaBoolOp();
     if (rule == lbo.getParserRule()) {
-        return 16;
+        return 14;
     }
     Cond c = Cond();
     if (rule == c.getParserRule()) {
-        return 17;
+        return 15;
     }
     ElElse ee = ElElse();
     if (rule == ee.getParserRule()) {
-        return 18;
+        return 16;
     }
     LambdaElse le = LambdaElse();
     if (rule == le.getParserRule()) {
-        return 19;
+        return 17;
     }
     Rep r = Rep();
     if (rule == r.getParserRule()) {
-        return 20;
+        return 18;
     }
     Call cl = Call();
     if (rule == cl.getParserRule()) {
-        return 21;
+        return 19;
     }
     ExprParam ep = ExprParam();
     if (rule == ep.getParserRule()) {
-        return 22;
+        return 20;
     }
     LambdaParam lp = LambdaParam();
     if (rule == lp.getParserRule()) {
-        return 23;
+        return 21;
     }
     return -1;
 }
@@ -116,90 +108,82 @@ parser_rule getRuleFromNumber(int number) {
             return lc.getParserRule();
         }
         case 2: {
-            DecCode dc = DecCode();
-            return dc.getParserRule();
-        }
-        case 3: {
             AtribCode ac = AtribCode();
             return ac.getParserRule();
         }
-        case 4: {
+        case 3: {
             CondCode cc = CondCode();
             return cc.getParserRule();
         }
-        case 5: {
+        case 4: {
             RepCode rc = RepCode();
             return rc.getParserRule();
         }
-        case 6: {
+        case 5: {
             CallCode clc = CallCode();
             return clc.getParserRule();
         }
-        case 7: {
-            Declaration d = Declaration();
-            return d.getParserRule();
-        }
-        case 8: {
+        case 6: {
             Atrib a = Atrib();
             return a.getParserRule();
         }
-        case 9: {
+        case 7: {
             NumberExpression ne = NumberExpression();
             return ne.getParserRule();
         }
-        case 10: {
+        case 8: {
             IdExpression ie = IdExpression();
             return ie.getParserRule();
         }
-        case 11: {
+        case 9: {
             ParenExpression pe = ParenExpression();
             return pe.getParserRule();
         }
-        case 12: {
+        case 10: {
             OpOperation oo = OpOperation();
             return oo.getParserRule();
         }
-        case 13: {
+        case 11: {
             LambdaOperation lo = LambdaOperation();
             return lo.getParserRule();
         }
-        case 14: {
+        case 12: {
             Bool b = Bool();
             return b.getParserRule();
         }
-        case 15: {
+        case 13: {
             BoBoolOp bbo = BoBoolOp();
             return bbo.getParserRule();
         }
-        case 16: {
+        case 14: {
             LambdaBoolOp lbo = LambdaBoolOp();
             return lbo.getParserRule();
         }
-        case 17: {
+        case 15: {
             Cond c = Cond();
             return c.getParserRule();
         }
-        case 18: {
+        case 16: {
             ElElse ee = ElElse();
             return ee.getParserRule();
         }
-        case 19: {
+        case 17: {
             LambdaElse le = LambdaElse();
             return le.getParserRule();
         }
-        case 20: {
+        case 18: {
             Rep r = Rep();
             return r.getParserRule();
         }
-        case 21: {
+        case 19: {
             Call cll = Call();
             return cll.getParserRule();
         }
-        case 22: {
+        case 20: {
             ExprParam ep = ExprParam();
             return ep.getParserRule();
         }
-        case 23: {
+        case 21: {
             LambdaParam lp = LambdaParam();
             return lp.getParserRule();
         }

@@ -33,6 +33,12 @@ int main(int argc, char *argv[]) {
     }
     saveModuleToFile(outputFileName);
 
+    /* TODO:
+     * Fix negative numbers
+     * Implement scanf (get(n))
+     * Error handling (lexer, parser and IR)
+     */
+
     // } catch (string error) {
     //     cout << "ERROR: " << error << endl;
     // }

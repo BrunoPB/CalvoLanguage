@@ -45,7 +45,7 @@ shared_ptr<S> getAST(parsing_table parsingTable, vector<token> tokens) {
             }
             default:
                 // TODO: Error handling
-                break;
+                return nullptr;
         }
     }
     return move(ASTStack.s.top());
@@ -68,22 +68,13 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
         case 2: {
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
             ASTStack->c.pop();
-            shared_ptr<Declaration> d = shared_ptr<Declaration>{ASTStack->d.top()};
-            ASTStack->d.pop();
-            DecCode dc = DecCode(move(d), move(c));
-            ASTStack->c.push(move(make_shared<DecCode>(dc)));
-            break;
-        }
-        case 3: {
-            shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
-            ASTStack->c.pop();
             shared_ptr<Atrib> a = shared_ptr<Atrib>{ASTStack->a.top()};
             ASTStack->a.pop();
             AtribCode ac = AtribCode(move(a), move(c));
             ASTStack->c.push(move(make_shared<AtribCode>(ac)));
             break;
         }
-        case 4: {
+        case 3: {
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
             ASTStack->c.pop();
             shared_ptr<Cond> cn = shared_ptr<Cond>{ASTStack->cn.top()};
@@ -92,7 +83,7 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->c.push(move(make_shared<CondCode>(cc)));
             break;
         }
-        case 5: {
+        case 4: {
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
             ASTStack->c.pop();
             shared_ptr<Rep> r = shared_ptr<Rep>{ASTStack->r.top()};
@@ -101,7 +92,7 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->c.push(move(make_shared<RepCode>(rc)));
             break;
         }
-        case 6: {
+        case 5: {
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
             ASTStack->c.pop();
             shared_ptr<Call> cl = shared_ptr<Call>{ASTStack->cl.top()};
@@ -110,24 +101,18 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->c.push(move(make_shared<CallCode>(clc)));
             break;
         }
-        case 7: {
-            shared_ptr<Atrib> a = shared_ptr<Atrib>{ASTStack->a.top()};
-            ASTStack->a.pop();
-            tokenStack->pop();  // Removed "var" terminal
-            Declaration d = Declaration(move(a));
-            ASTStack->d.push(move(make_shared<Declaration>(d)));
-            break;
-        }
-        case 8: {
+        case 6: {
             shared_ptr<Expression> expr = shared_ptr<Expression>{ASTStack->expr.top()};
             ASTStack->expr.pop();
+            tokenStack->pop();  // Removed ";" terminal
+            tokenStack->pop();  // Removed "=" terminal
             string id = get<1>(tokenStack->top());
             tokenStack->pop();  // Removed id terminal
             Atrib a = Atrib(id, move(expr));
             ASTStack->a.push(move(make_shared<Atrib>(a)));
             break;
         }
-        case 9: {
+        case 7: {
             shared_ptr<Operation> o = shared_ptr<Operation>{ASTStack->o.top()};
             ASTStack->o.pop();
             int number = stoi(get<1>(tokenStack->top()));
@@ -136,7 +121,7 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->expr.push(move(make_shared<NumberExpression>(ne)));
             break;
         }
-        case 10: {
+        case 8: {
             shared_ptr<Operation> op = shared_ptr<Operation>{ASTStack->o.top()};
             ASTStack->o.pop();
             string id = get<1>(tokenStack->top());
@@ -145,16 +130,18 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->expr.push(move(make_shared<IdExpression>(ie)));
             break;
         }
-        case 11: {
+        case 9: {
+            shared_ptr<Operation> op = shared_ptr<Operation>{ASTStack->o.top()};
+            ASTStack->o.pop();
             shared_ptr<Expression> expr = shared_ptr<Expression>{ASTStack->expr.top()};
             ASTStack->expr.pop();
             tokenStack->pop();  // Removed ")" terminal
             tokenStack->pop();  // Removed "(" terminal
-            ParenExpression pe = ParenExpression(move(expr));
+            ParenExpression pe = ParenExpression(move(expr), move(op));
             ASTStack->expr.push(move(make_shared<ParenExpression>(pe)));
             break;
         }
-        case 12: {
+        case 10: {
             shared_ptr<Expression> expr = shared_ptr<Expression>{ASTStack->expr.top()};
             ASTStack->expr.pop();
             string op = get<1>(tokenStack->top());
@@ -163,12 +150,12 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->o.push(move(make_shared<OpOperation>(oo)));
             break;
         }
-        case 13: {
+        case 11: {
             LambdaOperation lo = LambdaOperation();
             ASTStack->o.push(move(make_shared<LambdaOperation>(lo)));
             break;
         }
-        case 14: {
+        case 12: {
             shared_ptr<BoolOp> boolop = shared_ptr<BoolOp>{ASTStack->bo.top()};
             ASTStack->bo.pop();
             shared_ptr<Expression> expr2 = shared_ptr<Expression>{ASTStack->expr.top()};
@@ -181,7 +168,7 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->b.push(move(make_shared<Bool>(b)));
             break;
         }
-        case 15: {
+        case 13: {
             shared_ptr<Bool> boolptr = shared_ptr<Bool>{ASTStack->b.top()};
             ASTStack->b.pop();
             string boolean = get<1>(tokenStack->top());
@@ -190,12 +177,12 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->bo.push(move(make_shared<BoBoolOp>(bbo)));
             break;
         }
-        case 16: {
+        case 14: {
             LambdaBoolOp lbo = LambdaBoolOp();
             ASTStack->bo.push(move(make_shared<LambdaBoolOp>(lbo)));
             break;
         }
-        case 17: {
+        case 15: {
             shared_ptr<Else> elseptr = shared_ptr<Else>{ASTStack->e.top()};
             ASTStack->e.pop();
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
@@ -211,7 +198,7 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->cn.push(move(make_shared<Cond>(cn)));
             break;
         }
-        case 18: {
+        case 16: {
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
             ASTStack->c.pop();
             tokenStack->pop();  // Removed "}" terminal
@@ -221,12 +208,12 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->e.push(move(make_shared<ElElse>(ee)));
             break;
         }
-        case 19: {
+        case 17: {
             LambdaElse le = LambdaElse();
             ASTStack->e.push(move(make_shared<LambdaElse>(le)));
             break;
         }
-        case 20: {
+        case 18: {
             shared_ptr<Code> c = shared_ptr<Code>{ASTStack->c.top()};
             ASTStack->c.pop();
             shared_ptr<Bool> boolptr = shared_ptr<Bool>{ASTStack->b.top()};
@@ -240,7 +227,7 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->r.push(move(make_shared<Rep>(r)));
             break;
         }
-        case 21: {
+        case 19: {
             shared_ptr<Param> p = shared_ptr<Param>{ASTStack->p.top()};
             ASTStack->p.pop();
             tokenStack->pop();  // Removed ";" terminal
@@ -252,14 +239,14 @@ void generateASTFromRule(ParserClasses* ASTStack, stack<token>* tokenStack, int 
             ASTStack->cl.push(move(make_shared<Call>(cl)));
             break;
         }
-        case 22: {
+        case 20: {
             shared_ptr<Expression> expr = shared_ptr<Expression>{ASTStack->expr.top()};
             ASTStack->expr.pop();
             ExprParam ep = ExprParam(move(expr));
             ASTStack->p.push(move(make_shared<ExprParam>(ep)));
             break;
         }
-        case 23: {
+        case 21: {
             LambdaParam lp = LambdaParam();
             ASTStack->p.push(move(make_shared<LambdaParam>(lp)));
             break;
@@ -327,16 +314,11 @@ set<parser_rule> getNonTerminalRules(int nonTerminal) {
         }
         case nt_CODE: {
             LambdaCode lc = LambdaCode();
-            DecCode dc = DecCode();
             AtribCode ac = AtribCode();
             CondCode cc = CondCode();
             RepCode rc = RepCode();
             CallCode clc = CallCode();
-            return {lc.getParserRule(), dc.getParserRule(), ac.getParserRule(), cc.getParserRule(), rc.getParserRule(), clc.getParserRule()};
-        }
-        case nt_DECLARATION: {
-            Declaration d = Declaration();
-            return {d.getParserRule()};
+            return {lc.getParserRule(), ac.getParserRule(), cc.getParserRule(), rc.getParserRule(), clc.getParserRule()};
         }
         case nt_ATRIB: {
             Atrib a = Atrib();
