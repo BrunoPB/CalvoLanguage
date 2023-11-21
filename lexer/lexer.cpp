@@ -7,8 +7,8 @@
 #include "../reader/reader.h"
 
 vector<token> getTokens(string fileName) {
-    vector<string> fileLines = readFile(fileName);
     vector<lexer_rule> rules = getLexerConfig();
+    vector<string> fileLines = readFile(fileName);
     vector<token> tokens = {};
     for (auto line : fileLines) {
         vector<token> line_tokens = tokenize(line, rules);

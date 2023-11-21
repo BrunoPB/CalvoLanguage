@@ -40,7 +40,7 @@ Value* Atrib::codegen() {
     if (varExists) {
         varAlloc = dyn_cast<AllocaInst>(lookup);
     } else {
-        varAlloc = Builder->CreateAlloca(varType, varValue, id);
+        varAlloc = Builder->CreateAlloca(varType);
         CurrentEnv->define(id, varAlloc);
     }
 
