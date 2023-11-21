@@ -20,6 +20,8 @@ bool matchAnyRule(string, vector<lexer_rule>);
 
 int matchToken(string, vector<lexer_rule>);
 
+bool needNegativeHandle(string, vector<token>);
+
 #include "lexer.cpp"
 
 #endif

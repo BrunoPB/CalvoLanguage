@@ -69,17 +69,15 @@ Value* NumberExpression::codegen() {
     } else if (operatorStr == "%") {
         return Builder->CreateSRem(lhs, rhs);
     } else {
-        cerr << "Unknown operator " << operatorStr << "\n";
+        error("INTERMEDIATE REPRESENTATION", "Unknown operator " + operatorStr);
         return nullptr;
     }
 }
 
 Value* IdExpression::codegen() {
-    Value* lookup = CurrentEnv->lookup(id);
-    bool varExists = (lookup != nullptr);
-    if (!varExists) {
-        cerr << "Variable " << id << " not found in current scope!\n";
-        return nullptr;
+    AllocaInst* lookup = (AllocaInst*)CurrentEnv->lookup(id);
+    if (lookup == nullptr) {
+        error("INTERMEDIATE REPRESENTATION", "Variable " + id + " not found in current scope!");
     }
     AllocaInst* varAlloc = dyn_cast<AllocaInst>(lookup);
     Value* lhs = Builder->CreateLoad(varAlloc->getAllocatedType(), varAlloc, id);
@@ -101,7 +99,7 @@ Value* IdExpression::codegen() {
     } else if (operatorStr == "%") {
         return Builder->CreateSRem(lhs, rhs);
     } else {
-        cerr << "Unknown operator " << operatorStr << "\n";
+        error("INTERMEDIATE REPRESENTATION", "Unknown operator " + operatorStr);
         return nullptr;
     }
 }
@@ -126,7 +124,7 @@ Value* ParenExpression::codegen() {
     } else if (operatorStr == "%") {
         return Builder->CreateSRem(lhs, rhs);
     } else {
-        cerr << "Unknown operator " << operatorStr << "\n";
+        error("INTERMEDIATE REPRESENTATION", "Unknown operator " + operatorStr);
         return nullptr;
     }
 }
@@ -155,7 +153,7 @@ Value* Bool::codegen() {
     } else if (compareStr == ">") {
         boolValue = Builder->CreateICmpSGT(lhs, rhs);
     } else {
-        cerr << "Unknown comparison operator " << compareStr << "\n";
+        error("INTERMEDIATE REPRESENTATION", "Unknown comparison operator " + compareStr);
         return nullptr;
     }
 
@@ -170,7 +168,7 @@ Value* Bool::codegen() {
     } else if (boolOp == "|") {
         return Builder->CreateOr(boolValue, oBool);
     } else {
-        cerr << "Unknown boolean operator " << boolOp << "\n";
+        error("INTERMEDIATE REPRESENTATION", "Unknown boolean operator " + boolOp);
         return nullptr;
     }
 }
@@ -221,12 +219,11 @@ Value* ElElse::codegen() {
 }
 
 Value* Rep::codegen() {
-
     Function* fn = TheModule->getFunction("main");
     BasicBlock* conditionBasicBlock = BasicBlock::Create(*TheContext, "condition", fn);
     BasicBlock* whileBasicBlock = BasicBlock::Create(*TheContext, "while", fn);
     BasicBlock* endWhileBasicBlock = BasicBlock::Create(*TheContext, "endWhile", fn);
-    
+
     Builder->CreateBr(conditionBasicBlock);
     Builder->SetInsertPoint(conditionBasicBlock);
     Value* conditionValue = boolptr->codegen();
@@ -263,8 +260,32 @@ Value* Call::codegen() {
         }
         fnCall = TheModule->getFunction("printf");
         return Builder->CreateCall(fnCall, argsAr);
+    } else if (id == "get") {
+        if (arg == nullptr) {
+            error("INTERMEDIATE REPRESENTATION", "Function get() should have 1 argument.");
+        }
+
+        // if (!param->expr->id) {
+        //     error("INTERMEDIATE REPRESENTATION", "Function get() should receive only a variable as parameter.");
+        // }
+
+        string varName = param->expr->id;
+        AllocaInst* stackPointer = (AllocaInst*)CurrentEnv->lookup(varName);
+
+        if (stackPointer == nullptr) {
+            error("INTERMEDIATE REPRESENTATION", "Variable " + varName + " not found in current scope!");
+        }
+
+        static Value* igStr = nullptr;
+        if (igStr == nullptr) {
+            igStr = Builder->CreateGlobalStringPtr("%d");
+        }
+
+        vector<Value*> argsAr = {igStr, move(stackPointer)};
+        fnCall = TheModule->getFunction("scanf");
+        return Builder->CreateCall(fnCall, argsAr);
     } else {
-        cout << "SHIT! THE FUNCTION CALL IS WRONG!\n";
+        error("INTERMEDIATE REPRESENTATION", "Unknown function call " + id);
     }
     return Builder->CreateCall(fnCall, arg);
 }

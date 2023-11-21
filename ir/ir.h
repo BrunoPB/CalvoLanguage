@@ -9,6 +9,8 @@ void compileToIR(shared_ptr<S>);
 
 void setupPrintfFunction();
 
+void setupScanfFunction();
+
 Function* declareMainFunction();
 
 void setEntryBlock(Function*);

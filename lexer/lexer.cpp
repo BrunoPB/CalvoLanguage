@@ -7,7 +7,6 @@
 #include "../reader/reader.h"
 
 vector<token> getTokens(string fileName) {
-    // try {
     vector<string> fileLines = readFile(fileName);
     vector<lexer_rule> rules = getLexerConfig();
     vector<token> tokens = {};
@@ -18,9 +17,6 @@ vector<token> getTokens(string fileName) {
                       line_tokens.begin() + line_tokens.size());
     }
     return tokens;
-    //} catch (string error) {
-    // throw error;
-    //}
 }
 
 vector<token> tokenize(string code, vector<lexer_rule> rules) {
@@ -35,13 +31,13 @@ vector<token> tokenize(string code, vector<lexer_rule> rules) {
         }
 
         if (!inComment && !matchAnyRule(lexeme, rules)) {
-            // throw "UNKNOWN LEXEME: " + lexeme;
+            error("LEXER", "Unknown lexeme: " + lexeme);
         }
 
         // Getting largest sequence possible using lookahead
 
         bool lookaheaded = false;
-        while (matchAnyRule(lexeme, rules) && i < code.length() - 1) {
+        while (matchAnyRule(lexeme, rules) && i < code.length() - 1 && !needNegativeHandle(lexeme, tokens)) {
             lookaheaded = true;
             i++;
             string c = code.substr(i, 1);
@@ -62,7 +58,7 @@ vector<token> tokenize(string code, vector<lexer_rule> rules) {
             if (inComment) {
                 inComment = false;
             } else {
-                // throw "ERROR IN LEXER: COMMENT ENDING WITHOUT STARTING.";
+                error("LEXER", "Comment ending without starting.");
             }
         } else if (!inComment) {
             token t = make_tuple(cur_token, lexeme);
@@ -96,6 +92,16 @@ int matchToken(string lexeme, vector<lexer_rule> rules) {
             return get<1>(rule);
         }
     }
+    error("LEXER", "Unknown token: " + lexeme);
     return -1;
-    // throw "UNKNOWN TOKEN: " + lexeme;
+}
+
+bool needNegativeHandle(string lexeme, vector<token> tokens) {
+    if (tokens.size() < 1) {
+        return false;
+    }
+    if (lexeme == "-" && get<0>(tokens.back()) == tok_number) {
+        return true;
+    }
+    return false;
 }

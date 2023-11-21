@@ -1,12 +1,8 @@
-i = 0;
+input = 0;
+get(input);
 
-while (i =! 7) {
-    i = i + 1;
-    while (i < 8) {
-        show(i+9-4);
-        if (i > 0) {
-            show(3333);
-        }
-    }
-    show(i);
+if (input > 0) {
+    show(1);
+} else {
+    show(0+9+8+8+0);
 }

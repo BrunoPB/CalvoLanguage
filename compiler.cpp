@@ -7,10 +7,8 @@
 #include "shared/allincludes.h"
 
 int main(int argc, char *argv[]) {
-    // try {
     if (argc < 2) {
-        cerr << "No file to compile." << endl;
-        return -1;
+        error("COMPILER", "No file to compile.");
     }
 
     // Lexer
@@ -33,14 +31,5 @@ int main(int argc, char *argv[]) {
     }
     saveModuleToFile(outputFileName);
 
-    /* TODO:
-     * Fix negative numbers
-     * Implement scanf (get(n))
-     * Error handling (lexer, parser and IR)
-     */
-
-    // } catch (string error) {
-    //     cout << "ERROR: " << error << endl;
-    // }
     return 0;
 }

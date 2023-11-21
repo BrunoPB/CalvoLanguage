@@ -2,6 +2,7 @@
 
 void compileToIR(shared_ptr<S> AST) {
     setupPrintfFunction();
+    setupScanfFunction();
     Function* mainFn = declareMainFunction();
     setEntryBlock(mainFn);
     AST->codegen();
@@ -12,6 +13,14 @@ void setupPrintfFunction() {
     string pn = "printf";
     Type* retType = Builder->getVoidTy();
     vector<Type*> argTypes = {Builder->getInt8Ty()->getPointerTo(), Builder->getInt32Ty()};
+    FunctionType* fnTypes = FunctionType::get(retType, argTypes, true);
+    TheModule->getOrInsertFunction(pn, fnTypes);
+}
+
+void setupScanfFunction() {
+    string pn = "scanf";
+    Type* retType = Builder->getInt32Ty();
+    vector<Type*> argTypes = {Builder->getInt8Ty()->getPointerTo(), Builder->getInt32Ty()->getPointerTo()};
     FunctionType* fnTypes = FunctionType::get(retType, argTypes, true);
     TheModule->getOrInsertFunction(pn, fnTypes);
 }

@@ -360,8 +360,6 @@ class ParserClasses {
     };
 };
 
-Value *LogErrorV(const char *);
-
 int getRuleNumber(parser_rule);
 
 parser_rule getRuleFromNumber(int);

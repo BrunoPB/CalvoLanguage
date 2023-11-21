@@ -12,8 +12,8 @@ shared_ptr<S> getAST(parsing_table parsingTable, vector<token> tokens) {
     while (!doneParsing) {
         tuple<int, int> key = make_tuple(get<0>(input[0]), stack.top());
         if (parsingTable.count(key) < 1) {
-            string error = "SYNTAX ERROR IN " + get<1>(input[0]);
-            // throw error;
+            string errorMsg = "Syntax error in " + get<1>(input[0]);
+            error("PARSER", errorMsg);
         }
         switch (get<0>(parsingTable[key])) {
             case 'a': {
@@ -44,8 +44,8 @@ shared_ptr<S> getAST(parsing_table parsingTable, vector<token> tokens) {
                 break;
             }
             default:
-                // TODO: Error handling
-                return nullptr;
+                error("PARSER", "Unhandled");
+                break;
         }
     }
     return move(ASTStack.s.top());

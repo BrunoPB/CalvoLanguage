@@ -1,10 +1,5 @@
 #include "parser-classes.h"
 
-Value* LogErrorV(const char* Str) {
-    cerr << *Str << endl;
-    return nullptr;
-}
-
 int getRuleNumber(parser_rule rule) {
     S s = S();
     if (rule == s.getParserRule()) {
